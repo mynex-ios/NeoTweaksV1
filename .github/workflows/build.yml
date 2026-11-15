@@ -8,25 +8,19 @@ jobs:
   build:
     runs-on: macos-15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Extract source
+      - name: Show files
         run: |
+          pwd
+          ls -la
+          find . -maxdepth 3 -type f
+
+      - name: Extract ZIP
+        run: |
+          mkdir source
           unzip "*.zip" -d source
 
-      - name: Find build script
+      - name: Locate build script
         run: |
           find source -name build.sh
-
-      - name: Build IPA
-        run: |
-          cd source/WQFiles-main
-          chmod +x build.sh
-          WQFILES_FINAL_IPA=NeoTweaks-build100.ipa bash build.sh
-
-      - name: Upload IPA
-        uses: actions/upload-artifact@v4
-        with:
-          name: NeoTweaks-IPA
-          path: source/WQFiles-main/NeoTweaks-build100.ipa
